@@ -147,7 +147,11 @@
 
         @media (max-width: 760px) {
             .catalogo {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .miniaturas {
+                display: none;
             }
         }
 
@@ -167,28 +171,23 @@
 
         .producto-tarjeta img {
             width: 100%;
-            height: 520px; /* aún más alto para mayor impacto */
-            object-fit: contain; /* mostrar la prenda completa sin recortes */
+            height: 280px;
+            object-fit: contain;
             border-radius: 10px;
             background-color: #000000;
         }
 
-        .producto-fotos {
-            display: grid;
-            gap: 14px;
-        }
-
         .producto-fotos .foto-principal {
             width: 100%;
-            min-height: 720px; /* altura extra para imágenes principales grandes */
+            height: 280px;
             border-radius: 12px;
             overflow: hidden;
         }
 
         .producto-fotos .foto-principal img {
             width: 100%;
-            height: auto;
-            max-height: 820px; /* permitir imágenes más grandes */
+            height: 280px;
+            max-height: 280px;
             object-fit: contain;
             display: block;
         }
@@ -268,15 +267,16 @@
         }
 
         .producto-tarjeta h3 {
-            font-size: 1.1rem;
-            margin: 15px 0 5px 0;
+            font-size: 0.85rem;
+            margin: 10px 0 4px 0;
+            line-height: 1.3;
         }
 
         .producto-tarjeta .precio {
             font-weight: bold;
             color: var(--color-principal);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
 
         /* Botones */
@@ -504,6 +504,87 @@
             background-color: var(--color-rosa-hover);
         }
 
+        /* Sección cómo comprar */
+        .como-comprar-seccion {
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(139, 14, 30, 0.15);
+            background: #0d0d0d;
+        }
+
+        .como-comprar-titulo {
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--color-texto-secundario);
+            margin: 0 0 40px 0;
+        }
+
+        .pasos-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .paso {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 160px;
+        }
+
+        .paso-icono {
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(139, 14, 30, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-rosa-oscuro);
+        }
+
+        .paso-icono svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .paso-num {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--color-rosa-oscuro);
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .paso-texto {
+            font-size: 0.82rem;
+            color: var(--color-texto-secundario);
+            margin: 0;
+            line-height: 1.5;
+            letter-spacing: 0.3px;
+        }
+
+        .paso-separador {
+            color: rgba(139, 14, 30, 0.3);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+
+        @media (max-width: 600px) {
+            .paso-separador { display: none; }
+            .pasos-container { gap: 24px; }
+            .paso { width: 140px; }
+        }
+
         /* ---- Filtros de categoría ---- */
         .filtros-categoria {
             display: flex;
@@ -705,28 +786,44 @@
         /* Footer de redes sociales */
         .footer-redes {
             background: #0a0a0a;
-            padding: 40px 20px 50px;
-            border-top: 1px solid var(--color-borde);
+            padding: 50px 20px 60px;
+            border-top: 1px solid rgba(139, 14, 30, 0.2);
             text-align: center;
             margin-top: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 24px;
+            gap: 30px;
         }
 
-        .footer-redes h3 {
+        .footer-titulo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-titulo h3 {
             margin: 0;
             color: var(--color-principal);
-            font-size: 2rem;
-            letter-spacing: 1px;
+            font-size: 1.3rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            font-weight: 300;
+            font-family: 'Georgia', serif;
+        }
+
+        .footer-linea {
+            width: 40px;
+            height: 1px;
+            background: var(--color-rosa-oscuro);
+            display: block;
         }
 
         .redes-lista {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 16px;
             flex-wrap: wrap;
             margin: 0;
             padding: 0;
@@ -735,33 +832,52 @@
 
         .redes-link {
             display: inline-flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
             gap: 10px;
-            padding: 18px 22px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(139, 14, 30, 0.3);
-            border-radius: 18px;
-            color: var(--color-principal);
+            padding: 12px 22px;
+            background: transparent;
+            border: 1px solid rgba(139, 14, 30, 0.35);
+            border-radius: 50px;
+            color: var(--color-texto-secundario);
             text-decoration: none;
-            min-width: 130px;
-            transition: transform 0.2s, background 0.2s;
+            transition: all 0.3s ease;
+            letter-spacing: 1.5px;
         }
 
         .redes-link:hover {
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--color-rosa-oscuro);
+            color: var(--color-principal);
+            background: rgba(139, 14, 30, 0.08);
+            transform: translateY(-2px);
         }
 
         .redes-link span {
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .redes-icon {
-            width: 54px;
-            height: 54px;
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        .footer-copy {
+            color: rgba(255,255,255,0.2);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+            .redes-link {
+                padding: 10px 18px;
+            }
+            .redes-icon {
+                width: 16px;
+                height: 16px;
+            }
         }
 
         /* ---------- Ajustes para celulares y pantallas chicas ---------- */
@@ -802,44 +918,70 @@
                 height: 18px;
             }
 
-            .info-tienda p {
-                font-size: 0.95rem;
+            .producto-tarjeta {
+                padding: 10px;
             }
 
             .producto-tarjeta img {
-                height: 320px;
+                height: 240px;
+            }
+
+            .producto-tarjeta h3 {
+                font-size: 0.85rem;
+            }
+
+            .producto-tarjeta .precio {
+                font-size: 1rem;
             }
 
             .producto-fotos .foto-principal {
+                min-height: 240px;
+            }
+
+            .contenedor-tienda {
+                padding: 0 10px;
+            }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            cursor: zoom-out;
+        }
+
+        .lightbox.hidden { display: none; }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-cerrar {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(139,14,30,0.8);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
                 min-height: 320px;
-            }
-
-            .miniaturas {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .miniaturas img {
-                width: 70px;
-                height: 70px;
-            }
-
-            .carrito-sidebar {
-                width: 100%;
-            }
-
-            .footer-redes h3 {
-                font-size: 1.4rem;
-            }
-
-            .redes-link {
-                min-width: 100px;
-                padding: 14px 16px;
-            }
-
-            .redes-icon {
-                width: 40px;
-                height: 40px;
             }
         }
     </style>
@@ -891,20 +1033,55 @@
         <button class="btn-seguir-comprando" type="button" onclick="cerrarSidebar()">Seguir comprando</button>
     </aside>
 
-    <!-- Sección de información de la tienda -->
-    <section class="info-tienda">
-        <div class="info-contenedor">
-            <p>🛍️ <strong>Compras y ventas minoristas</strong></p>
-            <p>⭐ <strong>8 años de experiencia</strong></p>
-            <p>📦 <strong>Nuevos ingresos todas las semanas</strong></p>
-            <p>📍 <strong>Retira en: Catalinas sur La Boca, CABA</strong></p>
-            <p>🚚 <strong>Envíos a todo el país</strong> 🇦🇷</p>
+    <!-- Sección cómo comprar -->
+    <section class="como-comprar-seccion">
+        <p class="como-comprar-titulo">¿Cómo comprar?</p>
+        <div class="pasos-container">
+            <div class="paso">
+                <div class="paso-icono">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <p class="paso-num">01</p>
+                <p class="paso-texto">Explorá el catálogo y elegí tu producto</p>
+            </div>
+            <div class="paso-separador">—</div>
+            <div class="paso">
+                <div class="paso-icono">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 6H4M3 6L5 17H19L21 8H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="10" cy="20" r="1" fill="currentColor"/>
+                        <circle cx="18" cy="20" r="1" fill="currentColor"/>
+                    </svg>
+                </div>
+                <p class="paso-num">02</p>
+                <p class="paso-texto">Agregala al carrito y elegí el color</p>
+            </div>
+            <div class="paso-separador">—</div>
+            <div class="paso">
+                <div class="paso-icono">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C7.03 3 3 7.03 3 12c0 1.77.52 3.42 1.42 4.81L3 21l4.32-1.36A8.96 8.96 0 0 0 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8.5 9.5c0 4 3 6.5 6.5 6.5l1-2-2.5-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2.5-1.5 1z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <p class="paso-num">03</p>
+                <p class="paso-texto">Confirmá tu pedido por WhatsApp</p>
+            </div>
+            <div class="paso-separador">—</div>
+            <div class="paso">
+                <div class="paso-icono">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C8.686 2 6 4.686 6 8c0 4.5 6 12 6 12s6-7.5 6-12c0-3.314-2.686-6-6-6z" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="12" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <p class="paso-num">04</p>
+                <p class="paso-texto">Coordinamos el envío o retiro</p>
+            </div>
         </div>
-    </section>
-
-    <!-- Aviso de cómo comprar -->
-    <section class="como-comprar">
-        <p>🛒 Elegí tus prendas y confirmá tu pedido por WhatsApp de forma directa</p>
     </section>
 
     <!-- 2. CONTENEDOR PRINCIPAL -->
@@ -919,6 +1096,12 @@
         <main class="catalogo" id="catalogo-productos">
             <p style="grid-column: 1 / -1; text-align:center; color: var(--color-texto-secundario);">Cargando productos...</p>
         </main>
+    </div>
+
+    <!-- Lightbox para ver fotos en grande -->
+    <div id="lightbox" class="lightbox hidden" onclick="cerrarLightbox()">
+        <button class="lightbox-cerrar" onclick="cerrarLightbox()">✕</button>
+        <img id="lightbox-img" src="" alt="Foto en grande">
     </div>
 
     <!-- Modal de datos del cliente antes de enviar el pedido -->
@@ -943,14 +1126,17 @@
 
     <!-- Footer de redes sociales -->
     <footer class="footer-redes">
-        <h3>Seguinos</h3>
+        <div class="footer-titulo">
+            <h3>Seguinos</h3>
+            <span class="footer-linea"></span>
+        </div>
         <ul class="redes-lista">
             <li>
                 <a class="redes-link" href="https://www.instagram.com/mgindumentaria.ok/" target="_blank" rel="noopener">
                     <svg class="redes-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+                        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
                     </svg>
                     <span>Instagram</span>
                 </a>
@@ -958,7 +1144,7 @@
             <li>
                 <a class="redes-link" href="https://wa.me/5491132462889" target="_blank" rel="noopener">
                     <svg class="redes-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 3C7.03 3 3 7.03 3 12c0 1.77.52 3.42 1.42 4.81L3 21l4.32-1.36A8.96 8.96 0 0 0 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 3C7.03 3 3 7.03 3 12c0 1.77.52 3.42 1.42 4.81L3 21l4.32-1.36A8.96 8.96 0 0 0 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M8.5 9.5c0 4 3 6.5 6.5 6.5l1-2-2.5-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2.5-1.5 1z" fill="currentColor"/>
                     </svg>
                     <span>WhatsApp</span>
@@ -967,13 +1153,14 @@
             <li>
                 <a class="redes-link" href="https://www.facebook.com/" target="_blank" rel="noopener">
                     <svg class="redes-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M14 8.5h-1.5c-.83 0-1.5.67-1.5 1.5v1.5H9v2h2v6.5h2v-6.5h1.8l.2-2H13v-1c0-.28.22-.5.5-.5H14v-2z" fill="currentColor"/>
                     </svg>
                     <span>Facebook</span>
                 </a>
             </li>
         </ul>
+        <p class="footer-copy">© TRINNILOVE — Accesorios</p>
     </footer>
 
     <!-- 3. LÓGICA DE LA TIENDA (JavaScript) -->
@@ -1096,9 +1283,9 @@
             const colorOptions = colores.map(c => `<option value="${c}">${c}</option>`).join('');
 
             return `
-            <div class="producto-tarjeta" data-categoria="${(producto.categoria || '').toLowerCase()}">
+            <div class="producto-tarjeta" data-categoria="${(producto.categoria || '').trim().toLowerCase()}">
                 <div class="producto-fotos">
-                    <div class="foto-principal">
+                    <div class="foto-principal" onclick="abrirLightbox(document.getElementById('foto-${id}').src)" style="cursor:zoom-in">
                         <img id="foto-${id}" src="${fotoInicial}" alt="${nombre}">
                     </div>
                     <div class="miniaturas" data-producto="${id}">
@@ -1247,18 +1434,22 @@
             const contenedorFiltros = document.getElementById('filtros-categoria');
             if (!contenedorFiltros) return;
 
-            // Categorías únicas, en el orden en que aparecen, ignorando vacías
-            const categorias = [...new Set(
-                productos.map(p => (p.categoria || '').trim()).filter(Boolean)
-            )];
+            // Categorías únicas ignorando mayúsculas, en el orden en que aparecen
+            const categoriasMap = new Map();
+            productos.forEach(p => {
+                const cat = (p.categoria || '').trim();
+                if (cat) {
+                    const key = cat.toLowerCase();
+                    if (!categoriasMap.has(key)) categoriasMap.set(key, cat);
+                }
+            });
 
-            if (!categorias.length) {
-                // Si nadie cargó categoría todavía, solo dejamos el botón "Todo"
+            if (!categoriasMap.size) {
                 contenedorFiltros.innerHTML = `<button class="btn-filtro activo" onclick="filtrarCategoria('todo', this)">Todo</button>`;
                 return;
             }
 
-            const botonesHtml = categorias.map(cat =>
+            const botonesHtml = [...categoriasMap.values()].map(cat =>
                 `<button class="btn-filtro" onclick="filtrarCategoria('${cat.replace(/'/g, "\\'")}', this)">${cat}</button>`
             ).join('');
 
@@ -1267,11 +1458,9 @@
 
         // ---------- Filtrar catálogo por categoría ----------
         function filtrarCategoria(categoria, boton) {
-            // Actualizar botón activo
             document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
             boton.classList.add('activo');
 
-            // Filtrar tarjetas
             const tarjetas = document.querySelectorAll('.producto-tarjeta');
             let visibles = 0;
 
@@ -1283,7 +1472,6 @@
                 if (mostrar) visibles++;
             });
 
-            // Mostrar mensaje si no hay resultados
             const contenedor = document.getElementById('catalogo-productos');
             const msgExistente = contenedor.querySelector('.no-resultados');
             if (msgExistente) msgExistente.remove();
@@ -1422,6 +1610,22 @@
 
             cerrarModalDatos();
         }
+
+        // ---------- Lightbox ----------
+        function abrirLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') cerrarLightbox();
+        });
 
         // ---------- Inicializar carrito vacío al cargar ----------
         actualizarCarrito();
