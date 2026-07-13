@@ -187,21 +187,23 @@
 
         .producto-tarjeta img {
             width: 100%;
-            height: 420px;
+            aspect-ratio: 1;
             object-fit: contain;
             border-radius: 10px;
-            background-color: #000000;
+            background-color: #f5f5f5;
         }
 
         @media (max-width: 760px) {
             .producto-tarjeta img {
-                height: 240px;
+                aspect-ratio: 1;
+                background-color: #f5f5f5;
             }
         }
 
         @media (max-width: 480px) {
             .producto-tarjeta img {
-                height: 200px;
+                aspect-ratio: 1;
+                background-color: #f5f5f5;
             }
         }
 
@@ -211,6 +213,7 @@
             border-radius: 12px;
             overflow: hidden;
             cursor: zoom-in;
+            background-color: #f5f5f5;
         }
 
         .producto-fotos .foto-principal img {
@@ -220,6 +223,7 @@
             object-fit: contain;
             display: block;
             transition: transform 0.2s;
+            background-color: #f5f5f5;
         }
 
         .producto-fotos .foto-principal:hover img {
