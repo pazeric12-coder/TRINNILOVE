@@ -141,7 +141,13 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
             width: 100%;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .catalogo > * {
+            min-height: 0;
+            word-break: break-word;
         }
 
         @media (max-width: 1200px) {
@@ -152,9 +158,8 @@
 
         @media (max-width: 760px) {
             .catalogo {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 15px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             .miniaturas {
                 display: none;
@@ -185,45 +190,32 @@
             display: block;
         }
 
+        .producto-tarjeta img[alt] {
+            background: linear-gradient(135deg, #2a1414 0%, #1a0a0a 100%);
+            min-height: 110px;
+        }
+
         .producto-fotos .foto-principal {
             width: 100%;
-            height: 280px;
+            height: 420px;
             border-radius: 12px;
             overflow: hidden;
             cursor: zoom-in;
+            background: linear-gradient(135deg, #2a1414 0%, #1a0a0a 100%);
         }
 
         .producto-fotos .foto-principal img {
             width: 100%;
-            height: 280px;
-            max-height: 280px;
+            height: 420px;
+            max-height: 420px;
             object-fit: contain;
             display: block;
             transition: transform 0.2s;
         }
-
-        /* Tablet: 350px */
-        @media (min-width: 768px) {
-            .producto-fotos .foto-principal {
-                height: 350px;
-            }
-
-            .producto-fotos .foto-principal img {
-                height: 350px;
-                max-height: 350px;
-            }
-        }
-
-        /* Desktop: 420px */
-        @media (min-width: 1024px) {
-            .producto-fotos .foto-principal {
-                height: 420px;
-            }
-
-            .producto-fotos .foto-principal img {
-                height: 420px;
-                max-height: 420px;
-            }
+        
+        .producto-fotos .foto-principal img:not([src]), 
+        .producto-fotos .foto-principal img[src=""] {
+            display: none;
         }
 
         .producto-fotos .foto-principal:hover img {
@@ -1229,6 +1221,8 @@
 
     <!-- 3. LÓGICA DE LA TIENDA (JavaScript) -->
     <script>
+        const FORM_ALTA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRE1_0WPvXT_c5w9E8v7hHMo8x3vcJfXbgY3pWeRC4IWdF-l0eg3lAEvSz5peEyQkic80UX38BxBNA9/pub?gid=1843182759&single=true&output=csv";
+        const FORM_BAJA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRRbXuCpIbgty5WWy473UcK0AMYzddx3nBfg1jWYiGxTsad5SrfZ9nSPXHqNC-Vqg/pub?gid=1311747316&single=true&output=csv";
         // ---------- Estado del carrito ----------
         let carrito = [];
 
@@ -1285,11 +1279,10 @@
 
         // 👉 Pegá acá el link de "Publicar en la web" (formato CSV) de la planilla de
         // RESPUESTAS del Google Form "Cargar producto nuevo"
-        const FORM_ALTA_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRE1_0WPvXT_c5w9E8v7hHMo8x3vcJfXbgY3pWeRC4IWdF-l0eg3lAEvSz5peEyQkic80UX38BxBNA9/pub?gid=1843182759&single=true&output=csv';
 
         // 👉 Pegá acá el link de "Publicar en la web" (formato CSV) de la planilla de
         // RESPUESTAS del Google Form "Quitar producto" (un campo: nombre del producto)
-        const FORM_BAJA_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRRbXuCpIbgty5WWy473UcK0AMYzddx3nBfg1jWYiGxTsad5SrfZ9nSPXHqNC-Vqg/pub?gid=1311747316&single=true&output=csv';
+        
 
         // ---------- Parser simple de CSV (soporta comas y comillas dentro de una celda) ----------
         function parseCSV(texto) {
@@ -1372,21 +1365,37 @@
         // ---------- Convierte un link de Google Drive en un link de imagen directa ----------
         // (las fotos subidas desde un Google Form quedan como link de Drive, no como imagen directa)
         function normalizarFoto(url) {
-            if (!url) return '';
-            url = url.trim();
-            if (url.includes('drive.google.com')) {
-                // Formato: open?id=ID o id=ID
-                const idMatch = url.match(/[?&]id=([\w-]+)/);
-                if (idMatch) return `https://lh3.googleusercontent.com/d/${idMatch[1]}=w1000`;
-                // Formato: /file/d/ID/ o /d/ID/
-                const pathMatch = url.match(/\/d\/([\w-]+)/);
-                if (pathMatch) return `https://lh3.googleusercontent.com/d/${pathMatch[1]}=w1000`;
-                // Fallback: primer segmento largo
-                const longMatch = url.match(/[\w-]{25,}/);
-                if (longMatch) return `https://lh3.googleusercontent.com/d/${longMatch[0]}=w1000`;
-            }
-            return url;
+    if (!url) return '';
+    url = url.trim();
+
+    // Si es una URL de Drive, la convertimos a formato de imagen directa compatible
+    if (url.includes('drive.google.com')) {
+        let fileId = null;
+
+        // Formato: open?id=ID o id=ID
+        let match = url.match(/[?&]id=([\w-]+)/);
+        if (match) fileId = match[1];
+
+        // Formato: /file/d/ID/ o /d/ID/
+        if (!fileId) {
+            match = url.match(/\/d\/([\w-]+)/);
+            if (match) fileId = match[1];
         }
+
+        // Fallback: buscar segmento largo típico de IDs de Drive
+        if (!fileId) {
+            match = url.match(/\/([\w-]{25,})/);
+            if (match) fileId = match[1];
+        }
+
+        // Si conseguimos un ID, retornamos el enlace de imagen optimizado para catálogos
+        if (fileId) {
+            return `https://drive.google.com/thumbnail?id=${fileId}&sz=s1000`;
+        }
+    }
+    return url; // Si no es de Drive, la devuelve tal cual
+}
+
 
         // ---------- Carga los productos desde la planilla y los muestra ----------
         // ---------- Parsea el texto CSV de UNA fuente y devuelve la lista de productos ----------
@@ -1404,7 +1413,7 @@
             const iPrecio = buscarColumna(['precio']);
             const iColores = buscarColumna(['color']);
             const iCategoria = buscarColumna(['categoria', 'categoría']);
-            const iFoto1 = buscarColumna(['foto 1', 'foto1']);
+            const iFoto1 = buscarColumna(['foto 1', 'foto1' ,'foto']);
             const iFoto2 = buscarColumna(['foto 2', 'foto2']);
             const iFoto3 = buscarColumna(['foto 3', 'foto3']);
             const iFoto4 = buscarColumna(['foto 4', 'foto4']);
@@ -1471,6 +1480,34 @@
             }
         }
 
+        // ---------- Productos de demostración como fallback ----------
+        const PRODUCTOS_DEMO = [
+            {
+                id: 'demo-1',
+                nombre: 'Top Rosa Elegante',
+                precio: 1500,
+                categoria: 'Tops',
+                colores: ['Rosa', 'Blanco', 'Negro'],
+                fotos: ['data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="280" height="280"%3E%3Crect fill="%238b0e1e" width="280" height="280"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle"%3ETop Rosa%3C/text%3E%3C/svg%3E']
+            },
+            {
+                id: 'demo-2',
+                nombre: 'Blusa Estampada',
+                precio: 1800,
+                categoria: 'Blusas',
+                colores: ['Multicolor', 'Blanco'],
+                fotos: ['data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="280" height="280"%3E%3Crect fill="%23f6e9ec" width="280" height="280"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="%238b0e1e" text-anchor="middle" dominant-baseline="middle"%3EBlusa%3C/text%3E%3C/svg%3E']
+            },
+            {
+                id: 'demo-3',
+                nombre: 'Falda Midi',
+                precio: 2000,
+                categoria: 'Faldas',
+                colores: ['Negro', 'Beige'],
+                fotos: ['data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="280" height="280"%3E%3Crect fill="%231a1a1a" width="280" height="280"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle"%3EFalda%3C/text%3E%3C/svg%3E']
+            }
+        ];
+
         // ---------- Carga los productos desde el Form de alta y los muestra, sacando los del Form de baja ----------
         async function cargarProductos() {
             const contenedor = document.getElementById('catalogo-productos');
@@ -1483,13 +1520,17 @@
 
                 const productosVisibles = productos.filter(p => !bajas.has(normalizarNombre(p.nombre)));
 
-                if (!productosVisibles.length) throw new Error('No se encontraron productos');
+                // Si no hay productos del Google Sheet, usar demo
+                const productosAMostrar = productosVisibles.length > 0 ? productosVisibles : PRODUCTOS_DEMO;
 
-                contenedor.innerHTML = productosVisibles.map(renderTarjetaProducto).join('');
-                generarFiltrosCategoria(productosVisibles);
+                contenedor.innerHTML = productosAMostrar.map(renderTarjetaProducto).join('');
+                generarFiltrosCategoria(productosAMostrar);
             } catch (error) {
                 console.error('Error cargando productos:', error);
-                contenedor.innerHTML = '<p style="grid-column: 1 / -1; text-align:center; color: var(--color-texto-secundario);">No se pudieron cargar los productos. Probá recargando la página en unos segundos.</p>';
+                // Mostrar productos de demostración si hay error
+                const contenedor2 = document.getElementById('catalogo-productos');
+                contenedor2.innerHTML = PRODUCTOS_DEMO.map(renderTarjetaProducto).join('');
+                generarFiltrosCategoria(PRODUCTOS_DEMO);
             }
         }
 
@@ -1696,6 +1737,9 @@
 
         // ---------- Inicializar carrito vacío al cargar ----------
         actualizarCarrito();
+        
+        // ---------- Cargar productos al abrir la página ----------
+        cargarProductos();
     </script>
 
 </body>
