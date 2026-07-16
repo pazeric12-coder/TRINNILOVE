@@ -1021,7 +1021,7 @@
             }
 
             .producto-fotos .foto-principal {
-                min-height: 240px;
+                min-height: auto !important;
             }
 
             .contenedor-tienda {
@@ -1098,29 +1098,31 @@
         }
 
         /* Código para que en celulares se vea todo en una sola columna */
+        /* --- INICIO DE CORRECCIÓN PARA CELULARES --- */
         @media (max-width: 600px) {
-
-            /* Seleccionamos el contenedor padre y le quitamos el grid */
-            .productos-grid,
-            .contenedor-productos {
+            .productos-grid {
                 display: block !important;
-                grid-template-columns: none !important;
+                width: 100% !important;
+                padding: 0 10px !important;
+                margin: 0 !important;
+                overflow-x: hidden !important;
             }
 
-            /* Nos aseguramos que la tarjeta ocupe el 100% de la pantalla */
             .producto-tarjeta {
-                width: 95% !important;
-                margin: 10px auto !important;
+                width: 90% !important;
+                margin: 20px auto !important;
+                display: block !important;
+                float: none !important;
+            }
+
+            .producto-tarjeta img {
+                width: 100% !important;
+                height: auto !important;
                 display: block !important;
             }
         }
 
-        /* Esto asegura que la imagen no sea más grande que la tarjeta */
-        .producto-tarjeta img {
-            width: 100% !important;
-            height: auto !important;
-        }
-        
+        /* --- FIN DE CORRECCIÓN --- */
     </style>
 </head>
 
